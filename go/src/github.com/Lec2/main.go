@@ -291,23 +291,108 @@
 // }
 // ------------------------------------------------------------------------
 
+// Массивы
+
+// package main
+
+// import (
+// 	"errors"
+// 	"fmt"
+// )
+
+// func main() {
+// 	messages := [3]string{"1", "2", "3"}
+
+// 	printMessages(messages)
+
+// 	fmt.Println(messages)
+// }
+
+// func printMessages(messages [3]string) error {
+// 	if len(messages) == 0 {
+// 		return errors.New("empty array")
+// 	}
+
+// 	messages[1] = "5"
+// 	fmt.Println(messages)
+
+// 	return nil
+// }
+// ------------------------------------------------------------------------
+
+// Слайсы
+
+// package main
+
+// import "fmt"
+// import "errors"
+
+// func main() {
+// 	messages := make([]string, 10000)
+// 	fmt.Println(len(messages))
+// 	fmt.Println(cap(messages))
+// 	messages = append(messages, "10001")
+// 	fmt.Println(len(messages))
+// 	fmt.Println(cap(messages))
+// }
+
+// func printMessages(messages []string) error {
+// 	if len(messages) == 0 {
+// 		return errors.New("empty array")
+// 	}
+
+// 	messages[1] = "5"
+// 	fmt.Println(messages)
+
+// 	return nil
+// }
+// ------------------------------------------------------------------------
+
+// Слайсы в матрице
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	matrix := make([][]int, 10)
+
+// 	counter := 0
+// 	for x := 0; x < 10; x++{
+// 		matrix[x] = make([]int, 10)
+// 		for y := 0; y < 10; y++{
+// 			counter++
+// 			matrix[x][y] = counter
+// 		}
+// 		fmt.Println(matrix[x])
+// 	}
+// }
+//------------------------------------------------------------------------
+
+// Цикл for и слайсы
+
 package main
 
-import (
-	"errors"
-	"fmt"
-)
+import "fmt"
 
-func main() {
-	messages := [3]string{"1", "2", "3"}
-	messages[1] = "5"
-	fmt.Println(messages)
-}
+func main(){
+	// messages := []string {
+	// 	"message 1",
+	// 	"message 2",
+	// 	"message 3",
+	// 	"message 4",
+	// }
+	// for _, message := range messages{
+	// 	fmt.Println(message)
+	// }
 
-func printMessages(messages [3]string) error {
-	if len(messages) == 0 {
-		return errors.New("empty array")
+	counter := 0
+
+	for {
+		if counter ==100{
+			break
+		}
+		
+		counter++
+		fmt.Println(counter)
 	}
-	fmt.Println(messages)
-	return nil
 }
