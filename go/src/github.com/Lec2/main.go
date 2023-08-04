@@ -370,29 +370,289 @@
 
 // Цикл for и слайсы
 
+// package main
+
+// import "fmt"
+
+// func main(){
+// 	// messages := []string {
+// 	// 	"message 1",
+// 	// 	"message 2",
+// 	// 	"message 3",
+// 	// 	"message 4",
+// 	// }
+// 	// for _, message := range messages{
+// 	// 	fmt.Println(message)
+// 	// }
+
+// 	counter := 0
+
+// 	for {
+// 		if counter ==100{
+// 			break
+// 		}
+
+// 		counter++
+// 		fmt.Println(counter)
+// 	}
+// }
+// ---------------------------------
+
+// 4.08
+// паника
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	defer handlerPanic()
+
+// 	messages := []string{
+// 		"message 1",
+// 		"message 2",
+// 		"message 3",
+// 		"message 4",
+// 	}
+
+// 	messages[4] = "message 5"
+
+// 	fmt.Println(messages)
+
+// }
+
+// func handlerPanic() {
+// 	if r := recover(); r != nil {
+// 		fmt.Println(r)
+// 	}
+
+// 	fmt.Println("handlerPanic() выполнен успешно")
+
+// }
+// -------------------------
+
+// Мапы
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	users := map[string]int{
+// 		"Artem":  16,
+// 		"Ruben":  23,
+// 		"Gergen": 22,
+// 	}
+
+// 	users["Kutyika"] = 21
+
+// 	delete(users, "Ruben")
+
+// 	var usersa map[string]int
+// 	usersa = make(map[string]int)
+
+// 	usersa["Alena"] = 10
+
+// 	for key, value := range users  {
+// 		fmt.Println(key, value)
+// 	}
+
+// 	for key, value := range usersa {
+// 		fmt.Println(key, value)
+// 	}
+// }
+// ----------------------------------------------------
+
+// // Структура
+
+// package main
+
+// import "fmt"
+
+// type Age int
+
+// func (a Age) isAdult() bool {
+// 	return a >= 18
+// }
+
+// type User struct {
+// 	name   string
+// 	age    Age
+// 	sex    string
+// 	weight int
+// 	height int
+// }
+
+// // func (u User) printUserInfo(name string) { // Является методом структуры
+// // 	u.name = name
+// // 	fmt.Println(u.name, u.age, u.sex, u.weight, u.height)
+// // }
+
+// func (u *User) setName(name string) {
+// 	u.name = name
+// }
+
+// func (u User) getName() string {
+// 	return u.name
+// }
+
+// type DumbDatabase struct {
+// 	m map[string]string
+// }
+
+// func NewBumbDatabase() *DumbDatabase { // Инициализация мапа
+// 	return &DumbDatabase{
+// 		m: make(map[string]string),
+// 	}
+
+// }
+
+// func NewUser(name, sex string, age, weight, height int) User {
+// 	return User{
+// 		name:   name,
+// 		age:    Age(age),
+// 		sex:    sex,
+// 		weight: weight,
+// 		height: height,
+// 	}
+// }
+
+// func main() {
+// 	user1 := User{"Artem", 24, "Male", 77, 175}           // В структуре значения передаются в {} скобках
+// 	user2 := NewUser("BumbleBizy", "Female", 22, 55, 155) // В конструкторе значения передаются в () скобках
+
+// 	// fmt.Printf("%+v\n", user1)
+// 	// fmt.Printf("%+v\n", user2)
+
+// 	// fmt.Println(user1.name, user1.age)
+// 	// fmt.Println(user2.name, user2.age)
+
+// 	// printUserInfo(user1)
+// 	// printUserInfo(user2)
+
+// 	user1.setName("Tagir")
+// 	user2.setName("Kisell")
+
+// 	fmt.Println(user1.getName())
+// 	fmt.Println(user1.age, user1.age.isAdult())
+// 	fmt.Println(user2.getName())
+
+// }
+
+// // func printUserInfo(user User) { // Является функцией
+// // 	fmt.Println(user.name, user.age, user.sex, user.weight, user.height)
+// // }
+// ----------------------------------------------------------------
+
+// // Интерфейсы
+
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"os"
+// 	"os/signal"
+// 	"time"
+
+// 	"github.com/zhashkevych/scheduler"
+// )
+
+// func main() {
+// 	ctx := context.Background()
+
+// 	t := time.Now()
+// 	fmt.Println(t)
+
+// 	worker := scheduler.NewScheduler()
+// 	worker.Add(ctx, parseSubscriptionData, time.Second*5)
+// 	worker.Add(ctx, sendStatistics, time.Second*10)
+
+// 	quit := make(chan os.Signal, 1)
+// 	signal.Notify(quit, os.Interrupt, os.Interrupt)
+
+// 	<-quit
+// 	worker.Stop()
+// }
+
+// func parseSubscriptionData(ctx context.Context) {
+// 	time.Sleep(time.Second * 1)
+// 	fmt.Printf("subscription parsed successfuly at %s\n", time.Now().String())
+// }
+
+// func sendStatistics(ctx context.Context) {
+// 	time.Sleep(time.Second * 5)
+// 	fmt.Printf("statistics sent at %s\n", time.Now().String())
+// }
+
+// func main() {
+// 	square := shape.NewSquare(5)
+// 	// ciecle := Circle{8}
+
+// 	printShapeArea(square)
+// 	// printShapeArea(ciecle)
+
+// 	printInterface(square)
+// 	// printInterface(ciecle)
+
+// 	scheduler := scheduler.NewScheduler()
+
+// }
+
+// func printShapeArea(s shape.Shape) { // Принимает интерфейс в качетсве аргумента
+// 	fmt.Println(s.Area())
+// 	fmt.Println(s.Perimeter())
+// }
+
+// func printInterface(i interface{}) {
+// 	switch value := i.(type) {
+// 	case int:
+// 		fmt.Println("int", value)
+
+// 	case bool:
+// 		fmt.Println("bool", value)
+// 	default:
+// 		fmt.Println("unknown type", value)
+// 	}
+// 	// fmt.Printf("%+v\n", i)
+// }
+
+// //---------------------------------------------------------------
+
+// Дженерики
+
 package main
 
 import "fmt"
 
-func main(){
-	// messages := []string {
-	// 	"message 1",
-	// 	"message 2",
-	// 	"message 3",
-	// 	"message 4",
-	// }
-	// for _, message := range messages{
-	// 	fmt.Println(message)
-	// }
+type Number interface {
+	int64 | float64
+}
 
-	counter := 0
+func main() {
+	a := []int64{1, 2, 3}
+	b := []float64{1.1, 2.2, 3.3}
+	c := []string{"1", "2", "3"}
 
-	for {
-		if counter ==100{
-			break
-		}
-		
-		counter++
-		fmt.Println(counter)
+	fmt.Println(sum(a))
+	fmt.Println(sum(b))
+	fmt.Println(searchElement(c, "2"))
+}
+
+func sum[V Number](input []V) V {
+	var result V
+
+	for _, number := range input {
+		result += number
 	}
+	return result
+}
+
+func searchElement[C comparable](elements []C, searchEl C) bool {
+	for _, el := range elements {
+		if el == searchEl {
+			return true
+		}
+	}
+
+	return false
 }
