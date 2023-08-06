@@ -618,41 +618,175 @@
 
 // //---------------------------------------------------------------
 
-// Дженерики
+// // Дженерики
 
-package main
+// package main
 
+// import "fmt"
+
+// type Number interface {
+// 	int64 | float64
+// }
+
+// func main() {
+// 	a := []int64{1, 2, 3}
+// 	b := []float64{1.1, 2.2, 3.3}
+// 	c := []string{"1", "2", "3"}
+
+// 	fmt.Println(sum(a))
+// 	fmt.Println(sum(b))
+// 	fmt.Println(searchElement(c, "2"))
+// }
+
+// func sum[V Number](input []V) V {
+// 	var result V
+
+// 	for _, number := range input {
+// 		result += number
+// 	}
+// 	return result
+// }
+
+// func searchElement[C comparable](elements []C, searchEl C) bool {
+// 	for _, el := range elements {
+// 		if el == searchEl {
+// 			return true
+// 		}
+// 	}
+
+// 	return false
+// }
+// -----------------------------------
+// Каналы
+
+// package main
+
+// import "fmt"
+
+// func main(){
+// 	msg := make(chan string, 3)
+
+// 	msg <- "Канал Бихан"
+// 	msg <- "Канал Бихан"
+// 	msg <- "Канал Бихан"
+
+// 	fmt.Println(<- msg)
+// 	fmt.Println(<- msg)
+// 	fmt.Println(<- msg)
+
+// 	close(msg)
+
+// 	for{
+// 		value, ok := <- msg
+// 		if !ok {
+// 			fmt.Println("chanel closed")
+// 			break
+// 		}
+
+// 		fmt.Println(value)
+
+// 	}
+// }
+// ----------------------------------
+
+// package main
+
+// import "fmt"
+// import "time"
+
+// func main() {
+// 	message1 := make(chan string)
+// 	message2 := make(chan string)
+
+// 	go func() {
+// 		for {
+// 			message1 <- "Канал 1. Прошло 200 мл. секунд"
+// 			time.Sleep(time.Millisecond * 200)
+// 		}
+// 	}()
+
+// 	go func() {
+// 		for{
+// 			message2 <- "Канал 2. Прошла 1 секунда"
+// 			time.Sleep(time.Second)
+// 		}
+// 	}()
+
+// 	for{
+// 		select{
+// 		case msg := <- message1:
+// 			fmt.Println(msg)
+// 		case msg := <- message2:
+// 			fmt.Println(msg)
+// 		default:
+// 		}
+// 	}
+// }
+// --------------------------------------
+
+// Мьютексы
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// type counter struct {
+// 	count int
+// 	mu *sync.Mutex
+// }
+
+// func (c *counter) inc() {
+// 	c.mu.Lock()
+// 	c.count++
+// 	c.mu.Unlock()
+// }
+
+// func (c *counter) value() int {
+// 	c.mu.Lock()
+// 	defer c.mu.Unlock()
+	
+// 	return c.count
+// }
+
+// func main(){
+// 	c := counter{
+// 		mu: new(sync.Mutex),
+// 	}
+// 	for i := 0; i < 1000; i++ {
+// 		go func() {
+// 			c.inc()
+// 		}()
+// 	}
+// 	time.Sleep(time.Second)
+// 	fmt.Println(c.value())
+// }
+// ----------------------------------------------------------------
+
+package main 
+
+import "context"
 import "fmt"
-
-type Number interface {
-	int64 | float64
-}
+import "time"
 
 func main() {
-	a := []int64{1, 2, 3}
-	b := []float64{1.1, 2.2, 3.3}
-	c := []string{"1", "2", "3"}
+	ctx := context.Background()
+	ctx, _ = context.WithTimeout(ctx, time.Second)
 
-	fmt.Println(sum(a))
-	fmt.Println(sum(b))
-	fmt.Println(searchElement(c, "2"))
+	parse(ctx)
 }
 
-func sum[V Number](input []V) V {
-	var result V
-
-	for _, number := range input {
-		result += number
-	}
-	return result
-}
-
-func searchElement[C comparable](elements []C, searchEl C) bool {
-	for _, el := range elements {
-		if el == searchEl {
-			return true
+func parse(ctx context.Context) {
+	for {
+		select{
+		case <-time.After(time.Second * 2):
+			fmt.Println("parsing completed")
+			return
+		case <-ctx.Done():
+			fmt.Println("deadline exided")
+			return
 		}
 	}
-
-	return false
 }
